@@ -5,6 +5,7 @@ RefNet: A Reference-aware Network for Background Based Conversation](https://arx
 
 ## Requirements 
 python 3.6
+
 tensorflow-gpu 1.3
 
 ## Run training
@@ -41,3 +42,5 @@ python run.py --mode=test --appoint_test log/RefNet/train/model.ckpt-10775
 Note: you want to run the above command using the same settings you entered for your training job (plus any decode mode specific flags like `beam_size`).
 
 This will repeatedly load random examples from your specified datafile and generate a summary using beam search. The results will be printed to screen.
+
+## Run dataset preprocessing
