@@ -1,4 +1,4 @@
-## RefNet (AAAI 2020 oral paper)
+# RefNet (AAAI 2020 oral paper)
 The code for [
 RefNet: A Reference-aware Network for Background Based Conversation](https://arxiv.org/abs/1908.06449)
 
@@ -7,7 +7,7 @@ RefNet: A Reference-aware Network for Background Based Conversation](https://arx
 python 3.6
 tensorflow-gpu 1.3
 
-### Run training
+## Run training
 To train your model, run:
 
 ```
@@ -20,7 +20,7 @@ This will create a subdirectory of your specified `log_root` called `myexperimen
 
 **Increasing sequence length during training**: Note that to obtain the results described in the paper, we increase the values of `max_enc_steps` and `max_dec_steps` in stages throughout training (mostly so we can perform quicker iterations during early stages of training). If you wish to do the same, start with small values of `max_enc_steps` and `max_dec_steps`, then interrupt and restart the job with larger values when you want to increase them.
 
-### Run validation
+## Run validation
 You may want to run a concurrent evaluation job, that runs your model on the validation set and logs the loss. To do this, run:
 
 ```
@@ -31,7 +31,7 @@ Note: you want to run the above command using the same settings you entered for 
 
 **Restoring snapshots**: The eval job saves a snapshot of the model that scored the lowest loss on the validation data so far. You may want to restore one of these "best models", e.g. if your training job has overfit, or if the training checkpoint has become corrupted by NaN values. To do this, run your train command plus the `--restore_best_model=1` flag. This will copy the best model in the eval directory to the train directory. Then run the usual train command again.
 
-### Run test
+## Run testing
 To run beam search decoding:
 
 ```
