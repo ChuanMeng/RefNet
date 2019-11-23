@@ -1,8 +1,6 @@
 ## RefNet (AAAI 2020 oral paper)
-This code of [
-RefNet: A Reference-aware Network for Background Based Conversation](https://github.com/abisee/pointer-generator)
-
-We add the query decoder which was not present in the original architecture. Please refer to the Appendix for additional details.
+The code for [
+RefNet: A Reference-aware Network for Background Based Conversation](https://arxiv.org/abs/1908.06449)
 
 
 ## Requirements 
