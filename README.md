@@ -1,7 +1,9 @@
 ## RefNet (AAAI 2020 oral paper)
-This code is modified [Pointer Generator](https://github.com/abisee/pointer-generator) code. It uses Tensorflow 1.0
+This code of [
+RefNet: A Reference-aware Network for Background Based Conversation](https://github.com/abisee/pointer-generator)
 
 We add the query decoder which was not present in the original architecture. Please refer to the Appendix for additional details.
+
 
 ## Requirements 
 python 3.6
