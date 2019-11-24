@@ -59,5 +59,5 @@ If you want to test the model in the setting of multiple golden references, run:
 ```
 python run.py --mode=test --appoint_test log/RefNet/train/model.ckpt-10775 --multi_label_eval True
 ```
-his will create `test_multi_result.json` in the directory `log/RefNet/`.
+This will create `test_multi_result.json` in the directory `log/RefNet/`.
 
