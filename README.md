@@ -1,6 +1,7 @@
 # RefNet (AAAI 2020 oral paper)
 The code for [
 RefNet: A Reference-aware Network for Background Based Conversation](https://arxiv.org/abs/1908.06449)
+
 ![image](https://github.com/ChuanMeng/RefNet/blob/master/model.jpg)
 
 ## Requirements 
