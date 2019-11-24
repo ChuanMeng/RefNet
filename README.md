@@ -7,8 +7,8 @@ RefNet: A Reference-aware Network for Background Based Conversation](https://arx
 If you use any source code included in this repo in your work, please cite the following paper.
 ```
 @inproceedings{chuanmeng2020refnet,
- author = {Chuan Meng, Pengjie Ren, Zhumin Chen, Christof Monz, Jun Ma, Maarten de Rijke},
- booktitle = {Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI)},
+ author = {Meng, Chuan and Ren, Pengjie and Chen, Zhumin and Monz, Christof and Ma, Jun and de Rijke, Maarten},
+ booktitle = {Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence},
  title = {RefNet: A Reference-aware Network for Background Based Conversation},
  year = {2020}
 }
