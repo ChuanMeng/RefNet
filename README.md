@@ -55,4 +55,9 @@ python run.py --mode=test --appoint_test log/RefNet/train/model.ckpt-10775
 ```
 This will create `test_result.json` and `Test_Infer_ckpt-10775` in the directory `log/RefNet/`, where the purpose of these two files is consistent with the validation process.
 
+If you want to test the model in the setting of multiple golden references, run:
+```
+python run.py --mode=test --appoint_test log/RefNet/train/model.ckpt-10775 --multi_label_eval True
+```
+his will create `test_multi_result.json` in the directory `log/RefNet/`.
 
