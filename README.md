@@ -33,21 +33,19 @@ To train your model, run:
 python run.py --mode=train
 ```
 
-This will create a subdirectory of your specified `log` called `myexperiment` where all checkpoints and other data will be saved. Then the model will start training using the `train_*.bin` files as training data.
+This will create a subdirectory of `log/RefNet` where all checkpoints and other data will be saved. Then the model will start training using the `train_*.bin` files as training data.
 
-**hyperparameter**: If you want to change some hyperparameters, you can change some settings in the file `config.yaml` carefully. 
+**Hyperparameter**: If you want to change some hyperparameters, you can change some settings in the file `config.yaml` carefully. 
 
 
 ## Run validation
-You may want to run a concurrent evaluation job, that runs your model on the validation set and logs the loss. To do this, run:
+You may want to run a concurrent evaluation job, that runs your model on the validation set and logs the results of automatic evaluation (F1, BLEU-4, ROUGE-1, ROUGE-2 and ROUGE-L ). To do this, run:
 
 ```
 python run.py --mode=val
 ```
+This will create `val_result.json` and `Validation_Infer_ckpt-xxxx` in the directory `log/RefNet`, where `val_result.json` records the automatic evaluation results in each epoch, and `Validation_Infer_ckpt-xxxx` records the response outputted by our model.
 
-Note: you want to run the above command using the same settings you entered for your training job.
-
-**Restoring snapshots**: The eval job saves a snapshot of the model that scored the lowest loss on the validation data so far. You may want to restore one of these "best models", e.g. if your training job has overfit, or if the training checkpoint has become corrupted by NaN values. To do this, run your train command plus the `--restore_best_model=1` flag. This will copy the best model in the eval directory to the train directory. Then run the usual train command again.
 
 ## Run testing
 To run beam search decoding:
