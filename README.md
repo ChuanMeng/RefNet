@@ -14,11 +14,12 @@ If you use any source code included in this repo in your work, please cite the f
 }
 ```
 ## Run dataset preprocessing
-First, you should download the [raw data version of Holl-E](https://github.com/nikitacs16/Holl-E), and put the raw data files (train_data.json, dev_data.json and test_data.json）in the directory '/data'.
-Then run the preprocessing script:
+First, you should download the [raw data version of Holl-E](https://github.com/nikitacs16/Holl-E), and put the raw data files (train_data.json, dev_data.json and test_data.json）in the directory `/data`.
+Then run the preprocessing script in the directory `/data`:
 ```
 python preprocress.py
 ```
+This will create the data in the setting of `mixed-short` background, which is the data version used in our paper. You can also change the setting in `preprocress.py` to create the data in the seting of `oracle` and `mixed-long` background.
 
 ## Requirements 
 python 3.6
@@ -32,11 +33,10 @@ To train your model, run:
 python run.py --mode=train
 ```
 
-This will create a subdirectory of your specified `log_root` called `myexperiment` where all checkpoints and other data will be saved. Then the model will start training using the `train_*.bin` files as training data.
+This will create a subdirectory of your specified `log` called `myexperiment` where all checkpoints and other data will be saved. Then the model will start training using the `train_*.bin` files as training data.
 
-**Warning**: Using default settings as in the above command, both initializing the model and running training iterations will probably be quite slow. To make things faster, try setting the following flags (especially `max_enc_steps` and `max_dec_steps`) to something smaller than the defaults specified in `run_summarization.py`: `hidden_dim`, `emb_dim`, `batch_size`, `max_enc_steps`, `max_dec_steps`, `vocab_size`. 
+**hyperparameter**: If you want to change some hyperparameters, you can change some settings in the file `config.yaml` carefully. 
 
-**Increasing sequence length during training**: Note that to obtain the results described in the paper, we increase the values of `max_enc_steps` and `max_dec_steps` in stages throughout training (mostly so we can perform quicker iterations during early stages of training). If you wish to do the same, start with small values of `max_enc_steps` and `max_dec_steps`, then interrupt and restart the job with larger values when you want to increase them.
 
 ## Run validation
 You may want to run a concurrent evaluation job, that runs your model on the validation set and logs the loss. To do this, run:
