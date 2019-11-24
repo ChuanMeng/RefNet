@@ -4,6 +4,9 @@ RefNet: A Reference-aware Network for Background Based Conversation](https://arx
 
 ![image](https://github.com/ChuanMeng/RefNet/blob/master/model.jpg)
 
+## Run dataset preprocessing
+First, you should download the [raw data version of Holl-E](https://github.com/nikitacs16/Holl-E).
+
 ## Requirements 
 python 3.6
 
@@ -44,4 +47,4 @@ Note: you want to run the above command using the same settings you entered for 
 
 This will repeatedly load random examples from your specified datafile and generate a summary using beam search. The results will be printed to screen.
 
-## Run dataset preprocessing
+
