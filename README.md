@@ -4,6 +4,15 @@ RefNet: A Reference-aware Network for Background Based Conversation](https://arx
 
 ![image](https://github.com/ChuanMeng/RefNet/blob/master/model.jpg)
 
+If you use any source code included in this repo in your work, please cite the following paper.
+```
+@inproceedings{chuanmeng2020refnet,
+ author = {Chuan Meng, Pengjie Ren, Zhumin Chen, Christof Monz, Jun Ma, Maarten de Rijke},
+ booktitle = {Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence},
+ title = {RefNet: A Reference-aware Network for Background Based Conversation},
+ year = {2019}
+}
+```
 ## Run dataset preprocessing
 First, you should download the [raw data version of Holl-E](https://github.com/nikitacs16/Holl-E).
 
