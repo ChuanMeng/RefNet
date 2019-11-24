@@ -8,7 +8,7 @@ If you use any source code included in this repo in your work, please cite the f
 ```
 @inproceedings{chuanmeng2020refnet,
  author = {Chuan Meng, Pengjie Ren, Zhumin Chen, Christof Monz, Jun Ma, Maarten de Rijke},
- booktitle = {Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence},
+ booktitle = {Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence (AAAI)},
  title = {RefNet: A Reference-aware Network for Background Based Conversation},
  year = {2020}
 }
