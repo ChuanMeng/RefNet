@@ -56,7 +56,7 @@ def evaluate(prediction, ground_truths):
     assert len(prediction) == len(ground_truths),"the length of predicted span and ground_truths span should be same"
     for i, pre in enumerate(prediction):
         if len(pre) == 0:
-            continue  #如果预测的span长度为空，代表没有span，则跳过不比
+            continue  # if the length of the span predicted is 0, we skip it.
         exact_match += metric_max_over_ground_truths(exact_match_score, pre, ground_truths[i])
         f1 += metric_max_over_ground_truths(f1_score, pre, ground_truths[i])
         total += 1
