@@ -45,6 +45,8 @@ python run.py --mode=val
 ```
 This will create `val_result.json` and `Validation_Infer_ckpt-xxxx` in the directory `log/RefNet/`, where `val_result.json` records the model performance about automatic evaluation metrics on the validation set for every epoch, and `Validation_Infer_ckpt-xxxx` records the response outputted by our model.
 
+**Note**: you can run validation after finishing the training, or at the same time with training. 
+
 
 ## Run testing
 After finishing the proprocess of training and validation, you should open the file `val_result.json` to select the best model based on the validation results according to BLEU metric or other metrics you like. Next, you should copy the model file path, for example`log/RefNet/train/model.ckpt-10775`, and run testing on this model:
