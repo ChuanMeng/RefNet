@@ -10,7 +10,7 @@ If you use any source code included in this repo in your work, please cite the f
  author = {Chuan Meng, Pengjie Ren, Zhumin Chen, Christof Monz, Jun Ma, Maarten de Rijke},
  booktitle = {Proceedings of the Thirty-Fourth AAAI Conference on Artificial Intelligence},
  title = {RefNet: A Reference-aware Network for Background Based Conversation},
- year = {2019}
+ year = {2020}
 }
 ```
 ## Requirements 
