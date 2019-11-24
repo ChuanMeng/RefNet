@@ -31,7 +31,7 @@ trunc_norm_init_std: 1e-4 #std of trunc norm init, used for initializing everyth
 max_grad_norm: 2.0 #for gradient clipping
 max_span_len: 60 #the max length of predicted span
 multi_hop_span_pre_mode: "mlp"
-multi_label_eval: True
+multi_label_eval: False
 matching_layer: True
 matching_gate: True
 
