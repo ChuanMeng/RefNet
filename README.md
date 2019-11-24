@@ -24,7 +24,7 @@ Then run the preprocessing script in the directory `/data`:
 ```
 python preprocress.py
 ```
-This will create the data in the setting of `mixed-short` background, which is the data version used in our paper. You can also change the setting in `preprocress.py` to create the data in the seting of `oracle` and `mixed-long` background.
+This will create the data in the setting of `mixed-short` background, which is the data version used in our paper. You can also change the setting in `preprocress.py` to create the data in the setting of `oracle` or `mixed-long` background.
 
 ## Run training
 To train your model, run:
