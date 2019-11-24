@@ -23,13 +23,13 @@ emb_dim: 128 #dimension of word embeddings
 batch_size: 16 #minibatch size'
 max_bac_enc_steps: 300 #max timesteps of background encoder (max source background text tokens) Change to 1200 in case of mixed-long
 max_con_enc_steps: 65 #max timesteps of context encoder (max source context text tokens)
-max_dec_steps: 91 #max timesteps of decoder (max response tokens)
+max_dec_steps: 65 #max timesteps of decoder (max response tokens)
 vocab_size: 25000  #'Size of vocabulary. These will be read from the vocabulary file in order. If the vocabulary file contains fewer words than this number, or if this number is set to 0, will take all words in the vocabulary file.
 lr: 0.001 #learning rate
 rand_unif_init_mag: 0.02 #magnitude for lstm cells random uniform inititalization
 trunc_norm_init_std: 1e-4 #std of trunc norm init, used for initializing everything else
 max_grad_norm: 2.0 #for gradient clipping
-max_span_len: 60 #the max length of predicted span
+max_span_len: 45 #the max length of predicted span
 multi_hop_span_pre_mode: "mlp"
 multi_label_eval: False
 matching_layer: True
