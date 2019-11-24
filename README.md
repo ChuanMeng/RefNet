@@ -14,7 +14,11 @@ If you use any source code included in this repo in your work, please cite the f
 }
 ```
 ## Run dataset preprocessing
-First, you should download the [raw data version of Holl-E](https://github.com/nikitacs16/Holl-E).
+First, you should download the [raw data version of Holl-E](https://github.com/nikitacs16/Holl-E), and put the raw data files (train_data.json, dev_data.json and test_data.json）in the directory '/data'.
+Then run the preprocessing script:
+```
+python preprocress.py
+```
 
 ## Requirements 
 python 3.6
