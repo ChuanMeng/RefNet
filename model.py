@@ -82,27 +82,44 @@ class Model:
 
     def _add_matching_layer(self, bac_encoder_inputs, con_encoder_inputs, bac_seq_len, gate=None):
         with tf.variable_scope('matching_layer'):
-            background_dense = tf.nn.relu(util.dense(bac_encoder_inputs, self._hps.hidden_dim, use_bias=False, scope="bac_encoder_inputs"))  # Tensor shape(batch, bac_len, hz)
-            context_dense = tf.nn.relu(util.dense(con_encoder_inputs, self._hps.hidden_dim, use_bias=False, scope="con_encoder_inputs"))  # Tensor shape(batch, bac_len, hz)
-            similarity_matrix = tf.matmul(background_dense, tf.transpose(context_dense, [0, 2, 1])) / (self._hps.hidden_dim ** 0.5)  # Tensor shape(batch, bac_len, con_len)
-            context_mask = tf.tile(tf.expand_dims(self._que_padding_mask, axis=1), [1, tf.shape(bac_encoder_inputs)[1], 1])  # Tensor shape(batch * bac_len * con_len )
-            similarity_matrix_softmax = tf.nn.softmax(util.mask_softmax(context_mask, similarity_matrix))  # Tensor shape(batch, bac_len, con_len)
-            context_att_vector = tf.matmul(similarity_matrix_softmax, con_encoder_inputs)
-            context_aware_bac_res = tf.concat([bac_encoder_inputs, context_att_vector], axis=2)
+            background_max_len = tf.shape(bac_encoder_inputs)[1]
+            context_max_len = tf.shape(con_encoder_inputs)[1]
 
-            if gate is True:
-                with tf.variable_scope('matching_layer_gate'):
-                    dim = context_aware_bac_res.get_shape().as_list()[-1]  # dim = 4*hz
-                    gate = tf.nn.sigmoid(util.dense(context_aware_bac_res, dim, use_bias=None)) # Tensor shape(batch, bac_len, 4*hz)
-                    context_aware_bac_res = context_aware_bac_res * gate
+            expanded_context = tf.tile(tf.expand_dims(con_encoder_inputs, -3), (1, background_max_len, 1, 1)) # (batch_size, max_nodes, query_len, node_feature_dim)
+            expanded_background = tf.tile(tf.expand_dims(bac_encoder_inputs, -2), (1, 1, context_max_len, 1)) #  (batch_size, max_nodes, query_len, node_feature_dim)
+            dot_product_matrix = expanded_background * expanded_context
+            concat_similarity_matrix = tf.concat((expanded_background, expanded_context, dot_product_matrix), -1)
+            similarity_matrix = tf.reduce_mean(util.dense(concat_similarity_matrix, 1, use_bias=False, scope="similarity_matrix"), -1)  # (batch_size, max_nodes, max_query)
 
-            cell_fw = tf.contrib.rnn.LSTMCell(self._hps.hidden_dim, initializer=self.rand_unif_init, state_is_tuple=True)
-            cell_bw = tf.contrib.rnn.LSTMCell(self._hps.hidden_dim, initializer=self.rand_unif_init, state_is_tuple=True)
+            # mask similarity_matrix
+            context_mask = tf.tile(tf.expand_dims(self._que_padding_mask, axis=1), [1, background_max_len, 1])  # Tensor shape(batch * bac_len * con_len )
+            context_masked_similarity_matrix = util.mask_softmax(context_mask, similarity_matrix)   # Tensor shape(batch * bac_len * con_len )
 
-            (encoder_outputs, (fw_st, bw_st)) = tf.nn.bidirectional_dynamic_rnn(cell_fw, cell_bw, context_aware_bac_res, dtype=tf.float32, sequence_length= bac_seq_len, swap_memory=True)
-            matching_output = tf.concat(encoder_outputs, 2)  # Tensor shape(batch, bac_len, 2*hz)
+            # background2context
+            similarity_matrix_softmax = tf.nn.softmax(context_masked_similarity_matrix, -1)  # Tensor shape(batch, bac_len, con_len)
+            background2context = tf.matmul(similarity_matrix_softmax, con_encoder_inputs)  # Tensor shape(batch, bac_len, 2hz)
 
-        return matching_output, fw_st, bw_st
+            # context2background
+            background_mask = self._enc_padding_mask  # Tensor shape(batch * bac_len)
+            squeezed_context_masked_similarity_matrix = tf.reduce_max(context_masked_similarity_matrix, -1)  # Tensor shape(batch * bac_len)
+            background_masked_similarity_matrix = util.mask_softmax(background_mask, squeezed_context_masked_similarity_matrix)  # Tensor shape(batch * bac_len)
+            b = tf.nn.softmax(background_masked_similarity_matrix, -1)  # Tensor shape(batch * bac_len)
+            context2background = tf.matmul(tf.expand_dims(b, 1), bac_encoder_inputs)  # (batch_size,1,bac_len) (batch_size, bac_len, feature_dim) = (batch_size,1,2hz)
+            context2background = tf.tile(context2background, (1, background_max_len, 1))  #  (batch_size,background_max_len, 2hz)
+            G = tf.concat((bac_encoder_inputs, background2context, bac_encoder_inputs * background2context, bac_encoder_inputs * context2background), -1)
+
+        with tf.variable_scope('modeling_layer1'):
+            cell_fw_1 = tf.contrib.rnn.LSTMCell(self._hps.hidden_dim, initializer=self.rand_unif_init, state_is_tuple=True)
+            cell_bw_1 = tf.contrib.rnn.LSTMCell(self._hps.hidden_dim, initializer=self.rand_unif_init, state_is_tuple=True)
+            (encoder_outputs1, (fw_st1, bw_st1)) = tf.nn.bidirectional_dynamic_rnn(cell_fw_1, cell_bw_1, G, dtype=tf.float32, sequence_length= bac_seq_len, swap_memory=True)
+            matching_output1 = tf.concat(encoder_outputs1, 2)  # Tensor shape(batch, bac_len, 2*hz)
+
+        with tf.variable_scope('modeling_layer2'):
+            cell_fw_2 = tf.contrib.rnn.LSTMCell(self._hps.hidden_dim, initializer=self.rand_unif_init, state_is_tuple=True)
+            cell_bw_2 = tf.contrib.rnn.LSTMCell(self._hps.hidden_dim, initializer=self.rand_unif_init, state_is_tuple=True)
+            (encoder_outputs2, (fw_st2, bw_st2)) = tf.nn.bidirectional_dynamic_rnn(cell_fw_2, cell_bw_2, matching_output1, dtype=tf.float32, sequence_length= bac_seq_len, swap_memory=True)
+            matching_output2 = tf.concat(encoder_outputs2, 2)  # Tensor shape(batch, bac_len, 2*hz)
+        return matching_output2, fw_st2, bw_st2
 
     def _reduce_states(self, fw_st, bw_st, fw_st_q, bw_st_q):
         hidden_dim = self._hps.hidden_dim
